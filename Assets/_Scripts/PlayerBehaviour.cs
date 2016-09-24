@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class PlayerBehaviour : MonoBehaviour {
-	
+
 	// Movement modifier applied to directional movement.
 	public float playerSpeed = 4.0f;
 	// What the current speed of our player is
@@ -31,12 +31,12 @@ public class PlayerBehaviour : MonoBehaviour {
 	public Camera mainCamera;
 
 	// Use this for initialization
-	void Start () {
+	void Start() {
 		audioSource = GetComponent<AudioSource>();
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
+	void Update() {
 		// Rotate player to face mouse
 		Rotation();
 		// Move the player's body
@@ -45,10 +45,8 @@ public class PlayerBehaviour : MonoBehaviour {
 		// a foreach loop will go through each item inside of
 		// shootButton and do whatever we placed in {}s using the
 		// element variable to hold the item
-		foreach (KeyCode element in shootButton)
-		{
-			if(Input.GetKey(element) && timeTilNextFire < 0)
-			{
+		foreach (KeyCode element in shootButton) {
+			if (Input.GetKey(element) && timeTilNextFire < 0) {
 				timeTilNextFire = timeBetweenFires;
 				ShootLaser();
 				break;
@@ -60,8 +58,7 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	// Will rotate the ship to face the mouse.
-	void Rotation()
-	{
+	void Rotation() {
 		// We need to tell where the mouse is relative to the
 		// player
 		Vector3 worldPos = Input.mousePosition;
@@ -85,38 +82,34 @@ public class PlayerBehaviour : MonoBehaviour {
 	}
 
 	// Will move the player based off of keys pressed
-	void Movement()
-	{
+	void Movement() {
 		// The movement that needs to occur this frame
 		Vector3 movement = new Vector3();
 		// Check for input
-		movement.x += Input.GetAxis ("Horizontal");
-		movement.y += Input.GetAxis ("Vertical");
+		movement.x += Input.GetAxis("Horizontal");
+		movement.y += Input.GetAxis("Vertical");
 		/*
 		* If we pressed multiple buttons, make sure we're only
 		* moving the same length.
 		*/
-		movement.Normalize ();
+		movement.Normalize();
 		// Check if we pressed anything
-		if(movement.magnitude > 0)
-		{
+		if (movement.magnitude > 0) {
 			// If we did, move in that direction
 			currentSpeed = playerSpeed;
 			this.transform.Translate(movement * Time.deltaTime *
 				playerSpeed, Space.World);
 			lastMovement = movement;
 
-			mainCamera.transform.Translate (movement * Time.deltaTime * playerSpeed, Space.World);
-		}
-		else
-		{
+			mainCamera.transform.Translate(movement * Time.deltaTime * playerSpeed, Space.World);
+		} else {
 			// Otherwise, move in the direction we were going
 			this.transform.Translate(lastMovement * Time.deltaTime *
 				currentSpeed, Space.World);
 
 			mainCamera.transform.Translate(lastMovement * Time.deltaTime *
 				currentSpeed, Space.World);
-			
+
 			// Slow down over time
 			currentSpeed *= .9f;
 		}
@@ -124,9 +117,8 @@ public class PlayerBehaviour : MonoBehaviour {
 
 	// Creates a laser and gives it an initial position in
 	// front of the ship.
-	void ShootLaser()
-	{
-		audioSource.PlayOneShot (shootSound, 1.0f);
+	void ShootLaser() {
+		audioSource.PlayOneShot(shootSound, 1.0f);
 
 		// We want to position the laser in relation to
 		// our player's location
